@@ -240,6 +240,7 @@ class RefEncoder(nn.Module):
        inter_emb = self.dropout(self.layer_norm1(t.relu(self.conv1(inter_emb)).contiguous().transpose(1,2))).transpose(1,2)
        inter_emb = self.dropout(self.layer_norm2(t.relu(self.conv2(inter_emb)).contiguous().transpose(1,2))).transpose(1,2)
        inter_emb = self.dropout(self.layer_norm3(t.relu(self.conv3(inter_emb)).contiguous().transpose(1,2)))
+       self.gru.flatten_parameters()
        out_emb, last_state_emb = self.gru(inter_emb)
        coarse_emb = t.mean(out_emb, 1, keepdim=True)
        coarse_emb = self.coarse_layer(coarse_emb)
